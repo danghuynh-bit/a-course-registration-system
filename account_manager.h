@@ -15,6 +15,18 @@ typedef struct Users {
 	char name[256], username[256], password[256], program[256]; 
 } Users;
 
+//Log out user
+void logOutUser(Users &usr);
+
+//Change account password
+void changeAccPassword(Users &usr);
+
+//View account profile
+void viewAccProfile(Users usr);
+
+//Modify account
+void accountDetail(Users &usr);
+
 //Print the menu for users to login, sign up,...
 void accountManagerMenu(Users &usr);
 
