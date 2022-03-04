@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o singly_linked_list.o account_manager.o school_year.o
-LINKOBJ  = main.o singly_linked_list.o account_manager.o school_year.o
+OBJ      = main.o singly_linked_list.o account_manager.o school_year.o semester_manager.o course_manager.o
+LINKOBJ  = main.o singly_linked_list.o account_manager.o school_year.o semester_manager.o course_manager.o
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -g3
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
@@ -35,3 +35,9 @@ account_manager.o: account_manager.cpp
 
 school_year.o: school_year.cpp
 	$(CPP) -c school_year.cpp -o school_year.o $(CXXFLAGS)
+
+semester_manager.o: semester_manager.cpp
+	$(CPP) -c semester_manager.cpp -o semester_manager.o $(CXXFLAGS)
+
+course_manager.o: course_manager.cpp
+	$(CPP) -c course_manager.cpp -o course_manager.o $(CXXFLAGS)

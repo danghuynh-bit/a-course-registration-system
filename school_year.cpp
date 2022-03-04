@@ -1,4 +1,6 @@
 #include "school_year.h"
+#include "semester_manager.h"
+#include "course_manager.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -217,6 +219,8 @@ void schoolYearMenu() {
 	cout << "\t2. Create class.\n";
 	cout << "\t3. Add 1st year student.\n";
 	cout << "\t4. Add 1st year student by CSV file.\n";
+	cout << "\t5. Create a semester\n";
+	cout << "\t6. Create a course\n";
 	
 	int choice;
 	cout << "Your choice: ";
@@ -230,6 +234,10 @@ void schoolYearMenu() {
 		addFirstYearStudent();
 	else if (choice == 4)
 		addStudentCSV();
+	else if (choice == 5)
+		createSemester();
+	else if (choice == 6)
+		createCourses();
 }
 
 //Create school years
@@ -247,6 +255,10 @@ void createSchoolYear() {
 	else {
 		ofstream outFile("school_years.dat", ios::binary | ios::app);
 		outFile.write(reinterpret_cast<char *>(&year), sizeof(year));
+		outFile.close();
+		
+		string fileName = to_string(year.start) + "_" + to_string(year.end) + "_school_year.dat";
+		outFile.open(fileName, ios::binary);
 		outFile.close();
 	}
 }
