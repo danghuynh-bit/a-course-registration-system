@@ -1,0 +1,6 @@
+no;student_id;first_name;last_name;class;gender;birthday;program;social_id;generation;username;password
+1;21127101;A;Nguyen;21CLC10;0;10/02/2003;CLC;123456798;21;;;
+2;21127102;B;Vo;21CLC10;1;21/12/2003;CLC;132456789;21;;;
+3;21127103;C;Le;21CLC10;1;03/07/2003;CLC;123546789;21;;;
+4;21127104;D;Hoang;21APCS1;0;04/02/2003;APCS;143256789;21;;;
+5;21127105;E;Thai;21APCS2;0;07/12/2003;APCS;154623789;21;;;		

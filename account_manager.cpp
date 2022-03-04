@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include "account_manager.h"
+#include "school_year.h"
 
 using namespace std;
 
@@ -10,7 +11,13 @@ void viewAccProfile(Users usr) {
 	system("cls");
 	
 	cout << "Username: " << usr.username << endl;
-	cout << "Name: " << usr.name << endl;
+	
+	cout << "First name: " << usr.fName << endl;
+	cout << "Last name: " << usr.lName << endl;
+	
+	cout << "Birthday: " << usr.birth << endl;
+	
+	cout << "Social ID: " << usr.social_id << endl;
 	
 	cout << "Role: ";
 	if (usr.role)
@@ -28,6 +35,7 @@ void viewAccProfile(Users usr) {
 		cout << "Generation: K" << usr.generation << endl;
 		cout << "ID: " << usr.id << endl;
 		cout << "Program: " << usr.program << endl;
+		cout << "Class: " << usr.classoom << endl;
 	} 
 }
 
@@ -92,6 +100,9 @@ void accountDetail(Users &usr) {
 	cout << "\t2. Change password\n";
 	cout << "\t3. Log out\n";
 	
+	if (usr.role) 
+		cout << "\t4. Academic staff administration tools: \n";
+	
 	int choice;
 	cout << "Your choice: ";
 	cin >> choice;
@@ -102,6 +113,8 @@ void accountDetail(Users &usr) {
 		changeAccPassword(usr);
 	else if (choice == 3) 
 		logOutUser(usr);
+	else if (usr.role && choice == 4) 
+		schoolYearMenu();
 }
 
 //Print the menu for users to login, sign up,...
@@ -121,7 +134,7 @@ void accountManagerMenu(Users &usr) {
 		}
 		
 		system("cls");
-		cout << "Welcome back, " << usr.name << "!\n";
+		cout << "Welcome back, " << usr.fName << "!\n";
 		accountDetail(usr);
 		
 	}
@@ -130,7 +143,7 @@ void accountManagerMenu(Users &usr) {
 			cout << "Invalid account, please try again!\n\n";
 		}
 		
-		system("cls");
+			system("cls");
 		cout << "Signed up successfully!";
 	}
 }
@@ -152,7 +165,22 @@ bool loginUser(Users &usr) {
 		
 		if (!strcmp(usr_temp.username, usr.username) && !strcmp(usr_temp.password, usr.password)) {
 			inpFile.close();
-			usr = usr_temp;
+			
+//			out of stack memory
+//			usr = usr_temp;
+			strcpy(usr.birth, usr_temp.birth);
+			strcpy(usr.fName, usr_temp.fName);
+			strcpy(usr.lName, usr_temp.lName);
+			strcpy(usr.password, usr_temp.password);
+			strcpy(usr.program, usr_temp.program);
+			strcpy(usr.username, usr_temp.username);
+			strcpy(usr.classoom, usr_temp.classoom);
+			usr.gender = usr_temp.gender;
+			usr.generation = usr_temp.generation;
+			usr.id = usr_temp.id;
+			usr.role = usr_temp.role;
+			usr.social_id = usr_temp.social_id;
+			
 			return true; //If login successfully, return true, otherwise, return false
 		}
 	}
@@ -191,15 +219,25 @@ bool registerUser(Users &usr) {
 	cin.ignore();
 	cin >> usr.password;
 	
-	cout << "Enter your name: ";
+	cout << "Enter your first name: ";
 	cin.ignore();
-	cin.getline(usr.name, sizeof(usr.name));
+	cin.getline(usr.fName, sizeof(usr.fName));
+	
+	cout << "Enter your last name: ";
+	cin.ignore();
+	cin.getline(usr.lName, sizeof(usr.fName));
+	
+	cout << "Enter your birthday: ";
+	cin >> usr.birth;
 	
 	cout << "Enter your role (0: student; 1: teacher): ";
 	cin >> usr.role;
 	
 	cout << "Enter your gender (0: male; 1: female): ";
 	cin >> usr.gender;
+	
+	cout << "Enter your social ID: ";
+	cin >> usr.social_id;
 	
 	if (!usr.role) {
 		cout << "Enter your student ID: ";
@@ -211,6 +249,10 @@ bool registerUser(Users &usr) {
 		cout << "Enter your program (APCS, CLC, VP, CQ,...): ";
 		cin.ignore();
 		cin >> usr.program;
+		
+		cout << "Enter your class: ";
+		cin.ignore();
+		cin >> usr.classoom;
 	}
 	
 	if (isUsernameExisted(usr)) 

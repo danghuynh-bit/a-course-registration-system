@@ -22,4 +22,4 @@ void insertAfterK(long k, Object obt, sList *&head, sList *&tale);
 
 void deallocatingList(sList *& head, sList *&tale);
 
-#endif 
+#endif

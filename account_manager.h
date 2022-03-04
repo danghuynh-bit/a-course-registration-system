@@ -9,10 +9,10 @@ typedef struct Users {
 		id: Student ID
 		program: APCS, CLC, VP, CQ,...
 		- 'Generation', 'id', 'program' is only availabe when a person is student
-	*/
+	*/ 
 	bool role, gender;
-	long generation, id; 
-	char name[256], username[256], password[256], program[256]; 
+	long id, social_id, generation;
+	char fName[256], lName[256], username[256], password[256], program[256], birth[256], classoom[256]; 
 } Users;
 
 //Log out user
