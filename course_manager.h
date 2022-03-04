@@ -18,10 +18,36 @@ typedef struct Courses {
 	long num_tch, credit, dSession1, dSession2, tSesstion1, tSesstion2, max_std = 50;
 }CRses;
 
+typedef struct linkedList {
+	CRses obt;
+	struct linkedList *next, *prev;
+} sCourses;
+
+void addTaleNode_CRS(CRses obt, sCourses *&head, sCourses *&tale);
+
+void addHeadNode_CRS(CRses obt, sCourses *&head, sCourses *&tale);
+
+void deleteNode_CRS(long k, sCourses *&head, sCourses *&tale);
+
+long getListLength_CRS(sCourses *head);
+
+void insertAfterK_CRS(long k, CRses obt, sCourses *&head, sCourses *&tale);
+
+void deallocatingList_CRS(sCourses *& head, sCourses *&tale);
+
+//print the courses to the screen
+void printCourses();
+
+//get list of the courses, return true if the file 'couses_manager.dat' existed, otherwise, return false
+bool getCoursesLinkedList(sCourses *&head, sCourses *&tale);
+
 //create a course
 void createCourses();
 
 //Get the teacher name when creating the course
 void getTcherName(CRses &courses);
+
+//Return true if the course existed in 'course_manager.dat', otherwise, return false
+bool isCsrIdExisted(CRses courses);
 
 #endif

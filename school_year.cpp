@@ -221,6 +221,7 @@ void schoolYearMenu() {
 	cout << "\t4. Add 1st year student by CSV file.\n";
 	cout << "\t5. Create a semester\n";
 	cout << "\t6. Create a course\n";
+	cout << "\t7. View created courses\n";
 	
 	int choice;
 	cout << "Your choice: ";
@@ -238,6 +239,8 @@ void schoolYearMenu() {
 		createSemester();
 	else if (choice == 6)
 		createCourses();
+	else if (choice == 7)
+		printCourses();
 }
 
 //Create school years
