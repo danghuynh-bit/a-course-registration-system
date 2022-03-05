@@ -30,8 +30,12 @@ void createSemester() {
 		ScYears year;
 		ifstream inpFile("school_years.dat", ios::binary);
 		
-		while (!inpFile.eof()) {
+		while (true) {
 			inpFile.read(reinterpret_cast<char *>(&year), sizeof(year));
+			
+			if (inpFile.eof())
+				break;
+			
 			cout << "\t" << ++cnt << ". " << year.start << " - " << year.end << endl;
 		}
 		
@@ -43,7 +47,7 @@ void createSemester() {
 		
 		cnt = 0;
 		inpFile.open("school_years.dat", ios::binary);
-		while (!inpFile.eof()) {
+		while (true) {
 			inpFile.read(reinterpret_cast<char *>(&year), sizeof(year));
 			
 			if (++cnt == choice)
@@ -85,8 +89,11 @@ bool isSemesterExisted(SMSTer semester) {
 		return false;
 		
 	SMSTer smr_temp;
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&smr_temp), sizeof(smr_temp));
+		
+		if (inpFile.eof())
+			break;
 		
 		if (semester.order == smr_temp.order)
 			return true;
@@ -104,9 +111,12 @@ bool isSchoolYearEmpty() {
 		
 	int cnt = 0;
 	ScYears year;
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&year), sizeof(year));
 		
+		if (inpFile.eof())
+			break;
+			
 		string fileName = to_string(year.start) + "_" + to_string(year.end) + "_school_year.dat";
 		
 		ifstream tempFile(fileName, ios::binary);

@@ -21,8 +21,12 @@ bool isStdIDExisted(Users stdent) {
 		
 	Users usr_temp;
 		
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
+		
+		if (inpFile.eof())
+			break;
+		
 		if (stdent.id == usr_temp.id) {
 			inpFile.close();
 			return true;
@@ -275,8 +279,12 @@ bool isSchoolYearExisted(ScYears year) {
 	if (!inpFile)
 		return false;
 	
-	while(!inpFile.eof()) {
+	while(true) {
 		inpFile.read(reinterpret_cast<char *>(&t_year), sizeof(t_year));
+		
+		if (inpFile.eof())
+			break;
+		
 		if (t_year.start == year.start && t_year.end == year.end) {
 			inpFile.close();
 			return true;

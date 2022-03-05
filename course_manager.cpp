@@ -160,8 +160,12 @@ bool getCoursesLinkedList(sCourses *&head, sCourses *&tale) {
 		return false;
 	
 	CRses courses;
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&courses), sizeof(courses));
+		
+		if (inpFile.eof())
+			break;
+		
 		addTaleNode_CRS(courses, head, tale);
 	}
 	
@@ -296,8 +300,11 @@ bool isCsrIdExisted(CRses courses) {
 		return false;
 	
 	CRses crs_temp;
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&crs_temp), sizeof(crs_temp));
+		
+		if (inpFile.eof())
+			break;
 		
 		if (!strcmp(crs_temp.crs_id, courses.crs_id)) {
 			inpFile.close();

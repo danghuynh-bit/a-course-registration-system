@@ -59,9 +59,12 @@ void changeAccPassword(Users &usr) {
 			ofstream outFile("temporary.dat", ios::binary);
 			ifstream inpFile("account_manager.dat", ios::binary);
 			
-			while (!inpFile.eof()) {
+			while (true) {
 				inpFile.read(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
 				
+				if (inpFile.eof())
+					break;
+									
 				if (!strcmp(usr_temp.username, usr.username) && !strcmp(usr_temp.password, pass)) 
 					strcpy(usr_temp.password, rpass1);
 					
@@ -74,8 +77,12 @@ void changeAccPassword(Users &usr) {
 			inpFile.open("temporary.dat", ios::binary);
 			outFile.open("account_manager.dat", ios::binary);
 			
-			while (!inpFile.eof()) {
+			while (true) {
 				inpFile.read(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
+				
+				if (inpFile.eof())
+					break;
+				
 				outFile.write(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
 			}
 			
@@ -160,8 +167,11 @@ bool loginUser(Users &usr) {
 	Users usr_temp;
 	ifstream inpFile("account_manager.dat", ios::binary);
 	
-	while(!inpFile.eof()) {
+	while(true) {
 		inpFile.read(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
+		
+		if (inpFile.eof())
+			break;
 		
 		if (!strcmp(usr_temp.username, usr.username) && !strcmp(usr_temp.password, usr.password)) {
 			inpFile.close();
@@ -197,8 +207,11 @@ bool isUsernameExisted(Users usr) {
 	if (!inpFile)
 		return false;
 	
-	while (!inpFile.eof()) {
+	while (true) {
 		inpFile.read(reinterpret_cast<char *>(&usr_temp), sizeof(usr_temp));
+		
+		if (inpFile.eof())
+			break;
 		
 		if (!strcmp(usr_temp.username, usr.username)) {
 			inpFile.close();
