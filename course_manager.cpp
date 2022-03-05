@@ -5,6 +5,138 @@
 
 using namespace std;
 
+//Get new course information from user input
+void getCourseInformation(CRses &courses) {
+	cout << "\nCurrent course ID: " << courses.crs_id;
+	cout << "\nEnter new course ID: ";
+	cin.ignore();
+	cin >> courses.crs_id;
+	
+	cout << "\nCurrent course name: " << courses.crs_name;
+	cout << "\nEnter new course name: ";
+	cin.ignore();
+	cin.getline(courses.crs_name, sizeof(courses.crs_name));
+	
+	cout << "\nCurrent start registration date: " << courses.reg_start;
+	cout << "\nEnter new start registration date: ";
+	cin >> courses.reg_start;
+	
+	cout << "\nCurrent end registration date: " << courses.reg_end;
+	cout << "\nEnter new end registration date: ";
+	cin.ignore();
+	cin >> courses.reg_end;
+	
+	cout << "\nCurrent number of credits: " << courses.credit;
+	cout << "\nEnter new number of credits: ";
+	cin >> courses.credit;
+	
+	cout << "\nCurrent maximum number of student: " << courses.max_std;
+	cout << "\nEnter new maximum number of student: ";
+	cin >> courses.max_std;
+	
+	cout << "\n\t1. Monday";
+	cout << "\n\t2. Tuesday";
+	cout << "\n\t3. Wednesday";
+	cout << "\n\t4. Thursday";
+	cout << "\n\t5. Friday";
+	cout << "\n\t6. Saturday\n";
+	
+	cout << "\nCurrent date for session 1: " << courses.dSession1;
+	cout << "\nEnter new date for session 1: ";
+	cin >> courses.dSession1;
+	
+	cout << "\nCurrent date for session 2: " << courses.dSession2;
+	cout << "\nEnter new date for session 2:";
+	cin >> courses.dSession2;
+	
+	cout << "\n\t1. 7:30";
+	cout << "\n\t2. 9:30";
+	cout << "\n\t3. 13:30";
+	cout << "\n\t4. 15:30\n";
+	
+	cout << "\nCurrent starting time for session 1: " << courses.tSesstion1;
+	cout << "\nEnter new starting time for session 1: ";
+	cin >> courses.tSesstion1;
+	
+	cout << "\nCurrent starting time for session 2: " << courses.tSesstion2;
+	cout << "\nEnter new starting time for session 2: ";
+	cin >> courses.tSesstion2;
+	
+	cout << "\nCurrent number of teacher in the course: " << courses.num_tch;
+	
+	//print teacher name list
+	if (courses.num_tch == 1) {
+		cout << "\t\n1. " << courses.tcher1 << endl;
+	}
+	else if (courses.num_tch == 2) {
+		cout << "\t\n1. " << courses.tcher1 << endl;
+		cout << "\t\n2. " << courses.tcher2 << endl;
+	}
+	else if (courses.num_tch == 3) {
+		cout << "\t\n1. " << courses.tcher1 << endl;
+		cout << "\t\n2. " << courses.tcher2 << endl;
+		cout << "\t\n3. " << courses.tcher3 << endl;
+	}
+	else if (courses.num_tch == 4) {
+		cout << "\t\n1. " << courses.tcher1 << endl;
+		cout << "\t\n2. " << courses.tcher2 << endl;
+		cout << "\t\n3. " << courses.tcher3 << endl;
+		cout << "\t\n4. " << courses.tcher4 << endl;
+	}
+	
+	cout << "Enter new number of teacher in the course: ";
+	cin >> courses.num_tch;
+	
+	getTcherName(courses);
+}
+
+//Update the course information
+void updateCourseInformation() {
+	system("cls");
+	
+	sCourses *head = nullptr, *tale = nullptr;
+	
+	getCoursesLinkedList(head, tale);
+	
+	cout << "----- LIST OF COURSES -----\n";
+	
+	long cnt = 0;
+	sCourses *currCRS = head;
+	while (currCRS != nullptr) {
+		cout << "\t" << ++cnt << ". " << currCRS->obt.crs_id << " - " << currCRS->obt.crs_name << endl;
+		currCRS = currCRS->next;
+	}
+		
+	long choice;
+	cout << "\nEnter your choice: ";
+	cin >> choice;
+	
+	if (choice > cnt)
+		cout << "Please try again!";
+	else {
+		//get the courses information at the position 'choice'
+		currCRS = head;
+		for (int i = 2; i <= choice; i++)
+			currCRS = currCRS->next;
+			
+		//get new course information from user input
+		getCourseInformation(currCRS->obt);
+		
+		//write new course information to the file 'courses_manager.dat'
+		currCRS = head;
+		ofstream outFile("courses_manager.dat", ios::binary);
+		
+		while (currCRS != nullptr) {
+			outFile.write(reinterpret_cast<char *>(&currCRS->obt), sizeof(currCRS->obt));
+			currCRS = currCRS->next;
+		}
+		
+		outFile.close();
+	}
+	
+	deallocatingList_CRS(head, tale);
+}
+
 void addTaleNode_CRS(CRses obt, sCourses *&head, sCourses *&tale) {
 	if (head == nullptr && tale == nullptr) { //check if the list is blank or not
 		head = new sCourses;
@@ -257,7 +389,6 @@ void getTcherName(CRses &courses) {
 		cin.getline(courses.tcher1, sizeof(courses.tcher1));
 		
 		cout << "Enter the 2nd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher2, sizeof(courses.tcher2));
 	}
 	else if (courses.num_tch == 3) {
@@ -266,11 +397,9 @@ void getTcherName(CRses &courses) {
 		cin.getline(courses.tcher1, sizeof(courses.tcher1));
 		
 		cout << "Enter the 2nd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher2, sizeof(courses.tcher2));
 		
 		cout << "Enter the 3rd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher3, sizeof(courses.tcher3));
 	}
 	else if (courses.num_tch == 4) {
@@ -279,15 +408,12 @@ void getTcherName(CRses &courses) {
 		cin.getline(courses.tcher1, sizeof(courses.tcher1));
 		
 		cout << "Enter the 2nd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher2, sizeof(courses.tcher2));
 		
 		cout << "Enter the 3rd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher3, sizeof(courses.tcher3));
 		
 		cout << "Enter the 4nd teacher's name: ";
-		cin.ignore();
 		cin.getline(courses.tcher4, sizeof(courses.tcher4));
 	}
 }

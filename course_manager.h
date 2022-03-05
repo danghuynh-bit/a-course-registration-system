@@ -35,6 +35,12 @@ void insertAfterK_CRS(long k, CRses obt, sCourses *&head, sCourses *&tale);
 
 void deallocatingList_CRS(sCourses *& head, sCourses *&tale);
 
+//Get new course information from user input
+void getCourseInformation(CRses &courses);
+
+//Update the course information
+void updateCourseInformation();
+
 //print the courses to the screen
 void printCourses();
 
