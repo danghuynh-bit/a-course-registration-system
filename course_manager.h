@@ -35,8 +35,11 @@ void insertAfterK_CRS(long k, CRses obt, sCourses *&head, sCourses *&tale);
 
 void deallocatingList_CRS(sCourses *& head, sCourses *&tale);
 
-//Get new course information from user input
-void getCourseInformation(CRses &courses);
+//Delete a course
+void deleteCourse();
+
+//Get new course information from user input. Return true if the new course id doesn't exist in the system, otherwise, return false
+bool getCourseInformation(CRses &courses);
 
 //Update the course information
 void updateCourseInformation();

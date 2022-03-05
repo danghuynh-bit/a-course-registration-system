@@ -54,7 +54,12 @@ void deleteNode(long k, sList *&head, sList *&tale) {
 		sHead = sHead->next;
 	}
 	
-	if (sHead->prev == nullptr) { //check if it is the head node
+	if (sHead == sTale) {
+		delete sHead;
+		head = nullptr;
+		tale = nullptr;
+	}
+	else if (sHead->prev == nullptr) { //check if it is the head node
 		sHead->next->prev = nullptr;
 		head = sHead->next;
 		delete sHead;

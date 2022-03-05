@@ -227,6 +227,7 @@ void schoolYearMenu() {
 	cout << "\t6. Create a course\n";
 	cout << "\t7. View created courses\n";
 	cout << "\t8. Update course information.\n";
+	cout << "\t9. Delete a course\n";
 	
 	int choice;
 	cout << "Your choice: ";
@@ -248,6 +249,8 @@ void schoolYearMenu() {
 		printCourses();
 	else if (choice == 8)
 		updateCourseInformation();
+	else if (choice == 9)
+		deleteCourse();
 }
 
 //Create school years

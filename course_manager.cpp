@@ -5,12 +5,33 @@
 
 using namespace std;
 
-//Get new course information from user input
-void getCourseInformation(CRses &courses) {
+//Get new course information from user input. Return true if the new course id doesn't exist in the system, otherwise, return false
+bool getCourseInformation(CRses &courses) {
+	char crs_id_temp[256];
+	strcpy(crs_id_temp, courses.crs_id);
+	
 	cout << "\nCurrent course ID: " << courses.crs_id;
 	cout << "\nEnter new course ID: ";
 	cin.ignore();
 	cin >> courses.crs_id;
+	
+//	check if the new course id doesn't exist in the system
+	if (isCsrIdExisted(courses)) {
+		strcpy(courses.crs_id, crs_id_temp);
+		return false;
+	}
+	
+//	delete the old "course_id + '_course.dat'" file
+	char fileName[256];
+	strcpy(fileName, crs_id_temp);
+	strcat(fileName, "_course.dat");
+	remove(fileName);
+	
+//	create new course file
+	strcpy(fileName, courses.crs_id);
+	strcat(fileName, "_course.dat");
+	ofstream outFile(fileName, ios::binary);
+	outFile.close();
 	
 	cout << "\nCurrent course name: " << courses.crs_name;
 	cout << "\nEnter new course name: ";
@@ -88,6 +109,8 @@ void getCourseInformation(CRses &courses) {
 	cin >> courses.num_tch;
 	
 	getTcherName(courses);
+	
+	return true;
 }
 
 //Update the course information
@@ -120,18 +143,20 @@ void updateCourseInformation() {
 			currCRS = currCRS->next;
 			
 		//get new course information from user input
-		getCourseInformation(currCRS->obt);
-		
-		//write new course information to the file 'courses_manager.dat'
-		currCRS = head;
-		ofstream outFile("courses_manager.dat", ios::binary);
-		
-		while (currCRS != nullptr) {
-			outFile.write(reinterpret_cast<char *>(&currCRS->obt), sizeof(currCRS->obt));
-			currCRS = currCRS->next;
+		if (getCourseInformation(currCRS->obt)) {
+			//write new course information to the file 'courses_manager.dat'
+			currCRS = head;
+			ofstream outFile("courses_manager.dat", ios::binary);
+			
+			while (currCRS != nullptr) {
+				outFile.write(reinterpret_cast<char *>(&currCRS->obt), sizeof(currCRS->obt));
+				currCRS = currCRS->next;
+			}
+			
+			outFile.close();
 		}
-		
-		outFile.close();
+		else 
+			cout << "The new course ID has already existed in the system!";
 	}
 	
 	deallocatingList_CRS(head, tale);
@@ -191,7 +216,12 @@ void deleteNode_CRS(long k, sCourses *&head, sCourses *&tale) {
 		sHead = sHead->next;
 	}
 	
-	if (sHead->prev == nullptr) { //check if it is the head node
+	if (sHead == sTale) {
+		delete sHead;
+		head = nullptr;
+		tale = nullptr;
+	}
+	else if (sHead->prev == nullptr) { //check if it is the head node
 		sHead->next->prev = nullptr;
 		head = sHead->next;
 		delete sHead;
@@ -260,6 +290,59 @@ void deallocatingList_CRS(sCourses *& head, sCourses *&tale) {
 	
 	head = nullptr;
 	tale = nullptr;
+}
+
+//Delete a course
+void deleteCourse() {
+	system("cls");
+	
+	sCourses *head = nullptr, *tale = nullptr;
+	getCoursesLinkedList(head, tale);
+	
+	long cnt = 0;
+	sCourses *currCRS = head;
+	while (currCRS != nullptr) {
+		cout << "\t" << ++cnt << ". " << currCRS->obt.crs_id << " - " << currCRS->obt.crs_name << endl;
+		currCRS = currCRS->next;
+	}
+	
+	long choice = 0;
+	cout << "\nEnter your choice: ";
+	cin >> choice;
+	
+	if (choice > cnt)
+		cout << "\nPlease try again!";
+	else {
+		string check;
+		cout << "\nAre you sure to delete this course (YES/NO): ";
+		cin >> check;
+		
+		if (check == "YES") {
+			currCRS = head;
+			for (long i = 2; i <= choice; i++)
+				currCRS = currCRS->next;
+			
+			//Delete course file
+			char fileName[256];
+			strcpy(fileName, currCRS->obt.crs_id);
+			strcat(fileName, "_course.dat");
+			remove(fileName);
+			
+			deleteNode_CRS(choice - 1, head, tale);
+			
+			currCRS = head;
+			ofstream outFile("courses_manager.dat", ios::binary);
+			
+			while (currCRS != nullptr) {
+				outFile.write(reinterpret_cast<char *>(&currCRS->obt), sizeof(currCRS->obt));
+				currCRS = currCRS->next;
+			}
+			
+			cout << "Delete successfully!";
+		}
+	}
+
+	deallocatingList_CRS(head, tale);
 }
 
 //print the courses to the screen
